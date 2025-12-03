@@ -8,27 +8,27 @@ services:
     environment:
       - NODE_ENV=production
       - API_URL=http://localhost:8081/api
-    depends_on:
-      - backend-prod
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+  #   depends_on:
+  #     - backend-prod
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
 
-  backend-prod:
-    image: ghcr.io/matthias-gousseau/stockmanager-backend:latest
-    container_name: stockmanager-backend-prod
-    restart: always
-    ports:
-      - "8081:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - DATABASE_URL=jdbc:postgresql://db-prod:5432/stockmanager_db
-      - DATABASE_USER=${DB_USER_PROD}
-      - DATABASE_PASSWORD=${DB_PASSWORD_PROD}
-      - JWT_SECRET=${JWT_SECRET_PROD}
+  # backend-prod:
+  #   image: ghcr.io/matthias-gousseau/stockmanager-backend:latest
+  #   container_name: stockmanager-backend-prod
+  #   restart: always
+  #   ports:
+  #     - "8081:8080"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=prod
+  #     - DATABASE_URL=jdbc:postgresql://db-prod:5432/stockmanager_db
+  #     - DATABASE_USER=${DB_USER_PROD}
+  #     - DATABASE_PASSWORD=${DB_PASSWORD_PROD}
+  #     - JWT_SECRET=${JWT_SECRET_PROD}
 #     depends_on:
 #       db-prod:
 #         condition: service_healthy
