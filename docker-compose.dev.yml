@@ -18,7 +18,7 @@ services:
       start_period: 40s
 
   backend-dev:
-    image: ghcr.io/matthias-gousseau/stockmanager-backend:latest
+    image: ghcr.io/matthias-gousseau/stockmanager-backend:dev
     container_name: stockmanager-backend-dev
     restart: always
     ports:
