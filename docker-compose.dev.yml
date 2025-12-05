@@ -28,7 +28,7 @@ services:
       - DATABASE_URL=jdbc:postgresql://db-dev:5432/stockmanager_db_dev
       - DATABASE_USER=${DB_USER_DEV:-postgres}
       - DATABASE_PASSWORD=${DB_PASSWORD_DEV:-postgres}
-      - JWT_SECRET=${JWT_SECRET_DEV}
+      - JWT_SECRET=${JWT_SECRET_DEV:-dev_secret_not_for_production}
     depends_on:
       db-dev:
         condition: service_healthy
@@ -42,10 +42,21 @@ services:
   db-dev:
     image: postgres:16
     container_name: postgres-stockmanager-dev
-    ports:
-    - "5433:5432"
     restart: always
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_USER: ${DB_USER_DEV:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD_DEV:-postgres}
       POSTGRES_DB: stockmanager_db_dev
+    volumes:
+      - pgdata-dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER_DEV:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata-dev:
+    driver: local
