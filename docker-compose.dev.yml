@@ -4,7 +4,7 @@ services:
     container_name: stockmanager-frontend-dev
     restart: always
     ports:
-      - "4201:4200"
+      - "127.0.0.1:4201:4200"
     environment:
       - NODE_ENV=development
       - API_URL=http://51.91.110.222:8081/api
@@ -22,7 +22,7 @@ services:
     container_name: stockmanager-backend-dev
     restart: always
     ports:
-      - "8081:8080"
+      - "127.0.0.1:8081:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - DATABASE_URL=jdbc:postgresql://db-dev:5432/stockmanager_db_dev

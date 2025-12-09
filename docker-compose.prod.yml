@@ -4,7 +4,7 @@ services:
     container_name: stockmanager-frontend-prod
     restart: always
     ports:
-      - "4200:4200"
+      - "127.0.0.1:4200:4200"
     environment:
       - NODE_ENV=production
       - API_URL=http://51.91.110.222:8080/api
@@ -22,7 +22,7 @@ services:
     container_name: stockmanager-backend-prod
     restart: always
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - DATABASE_URL=jdbc:postgresql://db-prod:5432/stockmanager_db_prod
