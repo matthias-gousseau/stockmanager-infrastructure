@@ -7,7 +7,7 @@ services:
       - "4201:4200"
     environment:
       - NODE_ENV=development
-      - API_URL=http://localhost:8081/api
+      - API_URL=http://51.91.110.222:8081/api
     depends_on:
       - backend-dev
     healthcheck:
@@ -18,7 +18,7 @@ services:
       start_period: 40s
 
   backend-dev:
-    image: ghcr.io/matthias-gousseau/stockmanager-backend:dev
+    image: ghcr.io/matthias-gousseau/stockmanager-backend:latest
     container_name: stockmanager-backend-dev
     restart: always
     ports:
@@ -41,7 +41,7 @@ services:
 
   db-dev:
     image: postgres:16
-    container_name: postgres-stockmanager-dev
+    container_name: stockmanager-db-dev
     restart: always
     ports:
       - "5433:5432"

@@ -7,7 +7,7 @@ services:
       - "4200:4200"
     environment:
       - NODE_ENV=production
-      - API_URL=http://localhost:8080/api
+      - API_URL=http://51.91.110.222:8080/api
     depends_on:
       - backend-prod
     healthcheck:
