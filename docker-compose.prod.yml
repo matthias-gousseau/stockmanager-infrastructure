@@ -93,7 +93,7 @@ services:
       - DATABASE_USER=${DB_USER_PROD}
       - DATABASE_PASSWORD=${DB_PASSWORD_PROD}
       - JWT_SECRET=${JWT_SECRET_PROD}
-      - ALLOWED_ORIGINS=http://51.91.110.222:4200
+      - ALLOWED_ORIGINS=https://stockmanager.matthiasgousseau.fr,http://51.91.110.222:4200,http://localhost:4200
     depends_on:
       db-prod:
         condition: service_healthy
