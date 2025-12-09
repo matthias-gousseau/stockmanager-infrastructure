@@ -62,6 +62,25 @@
 #     driver: local
 
 services:
+
+  frontend-prod:
+    image: ghcr.io/matthias-gousseau/stockmanager-frontend:latest
+    container_name: stockmanager-frontend-prod
+    restart: always
+    ports:
+      - "127.0.0.1:4200:4200"
+    environment:
+      - NODE_ENV=production
+      - API_URL=http://51.91.110.222:8080/api
+    depends_on:
+      - backend-prod
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+      
   backend-prod:
     image: ghcr.io/matthias-gousseau/stockmanager-backend:latest
     container_name: stockmanager-backend-prod
