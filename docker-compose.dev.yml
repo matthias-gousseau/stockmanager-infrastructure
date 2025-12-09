@@ -25,7 +25,7 @@ services:
       - "127.0.0.1:8081:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - DATABASE_URL=jdbc:postgresql://db-dev:5432/stockmanager_db_dev
+      - DATABASE_URL=jdbc:postgresql://db-dev:5433/stockmanager_db_dev
       - DATABASE_USER=${DB_USER_DEV:-postgres}
       - DATABASE_PASSWORD=${DB_PASSWORD_DEV:-postgres}
       - JWT_SECRET=${JWT_SECRET_DEV}
