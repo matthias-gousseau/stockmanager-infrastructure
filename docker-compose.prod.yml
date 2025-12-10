@@ -62,42 +62,41 @@
 #     driver: local
 
 services:
-
   frontend-prod:
     image: ghcr.io/matthias-gousseau/stockmanager-frontend:latest
     container_name: stockmanager-frontend-prod
     restart: always
     ports:
-      - "127.0.0.1:4200:4200"
+      - "4200:4200"
     environment:
       - NODE_ENV=production
       - API_URL=http://51.91.110.222:8080/api
     depends_on:
-      - backend-prod
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      backend-prod:
+        condition: service_healthy
 
   backend-prod:
     image: ghcr.io/matthias-gousseau/stockmanager-backend:latest
     container_name: stockmanager-backend-prod
-    restart: "no"  # ← Pas de restart automatique pendant le debug
+    restart: always
     ports:
-      - "8080:8080"  # ← Public temporairement
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - DATABASE_URL=jdbc:postgresql://stockmanager-db-prod:5432/stockmanager_db_prod
+      - DATABASE_URL=jdbc:postgresql://db-prod:5432/stockmanager_db_prod
       - DATABASE_USER=${DB_USER_PROD}
       - DATABASE_PASSWORD=${DB_PASSWORD_PROD}
       - JWT_SECRET=${JWT_SECRET_PROD}
-      - ALLOWED_ORIGINS=https://stockmanager.matthiasgousseau.fr,http://51.91.110.222:4200,http://localhost:4200
+      - ALLOWED_ORIGINS=https://stockmanager.matthiasgousseau.fr,http://51.91.110.222:4200
     depends_on:
       db-prod:
         condition: service_healthy
-  # Pas de healthcheck pendant le debug
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
 
   db-prod:
     image: postgres:16
@@ -112,7 +111,7 @@ services:
     volumes:
       - pgdata-prod:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER_PROD}"]
       interval: 10s
       timeout: 5s
       retries: 5
