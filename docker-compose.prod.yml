@@ -68,9 +68,6 @@ services:
     restart: always
     ports:
       - "4200:80"
-    environment:
-      - NODE_ENV=production
-      - API_URL=http://51.91.110.222:8080/api
     depends_on:
       backend-prod:
         condition: service_healthy
