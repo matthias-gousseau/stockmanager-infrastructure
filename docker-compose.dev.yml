@@ -4,40 +4,30 @@ services:
     container_name: stockmanager-frontend-dev
     restart: always
     ports:
-      - "127.0.0.1:4201:4200"
+      - "4201:4200"
     environment:
       - NODE_ENV=development
       - API_URL=http://51.91.110.222:8081/api
     depends_on:
-      - backend-dev
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      backend-dev:
+        condition: service_healthy
 
   backend-dev:
     image: ghcr.io/matthias-gousseau/stockmanager-backend:dev
     container_name: stockmanager-backend-dev
     restart: always
     ports:
-      - "127.0.0.1:8081:8080"
+      - "8081:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - DATABASE_URL=jdbc:postgresql://db-dev:5433/stockmanager_db_dev
+      - DATABASE_URL=jdbc:postgresql://db-dev:5432/stockmanager_db_dev
       - DATABASE_USER=${DB_USER_DEV:-postgres}
       - DATABASE_PASSWORD=${DB_PASSWORD_DEV:-postgres}
-      - JWT_SECRET=${JWT_SECRET_DEV}
+      - JWT_SECRET=${JWT_SECRET_DEV:-dev_secret}
+      - ALLOWED_ORIGINS=http://51.91.110.222:4201
     depends_on:
       db-dev:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
 
   db-dev:
     image: postgres:16
@@ -59,4 +49,3 @@ services:
 
 volumes:
   pgdata-dev:
-    driver: local
