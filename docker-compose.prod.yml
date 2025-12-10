@@ -67,7 +67,7 @@ services:
     container_name: stockmanager-frontend-prod
     restart: always
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       backend-prod:
         condition: service_healthy
